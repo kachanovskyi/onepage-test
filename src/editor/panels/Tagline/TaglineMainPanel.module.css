@@ -1,0 +1,151 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── Sortable Item List ─── */
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.itemRow:hover {
+  background: var(--color-surface-hover);
+}
+
+.itemRow.dragging {
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+}
+
+/* Drag Handle */
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+  cursor: grab;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+  touch-action: none;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.dragHandle:hover {
+  color: var(--color-text-secondary);
+}
+
+/* Item Content (clickable area) */
+
+.itemContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+  min-width: 0;
+  padding: 8px 8px 8px 4px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.itemLabel {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emptyMsg {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  padding: var(--space-sm) 0;
+}
+
+/* ─── Add Item Row ─── */
+
+.addRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  margin-top: 2px;
+}
+
+.addRow:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.addIcon {
+  flex-shrink: 0;
+}
+
+/* ─── Divider ─── */
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-md) 0;
+}
+
+/* ─── Styles Row ─── */
+
+.stylesRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  width: 100%;
+}
+
+.stylesRow:hover {
+  background: var(--color-surface-hover);
+}
+
+.stylesIcon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.stylesLabel {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}

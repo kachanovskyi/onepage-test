@@ -1,0 +1,43 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.controls > * + * {
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.groupTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Style row: layout only, visuals come from Chip variant classes */
+
+.variantRow {
+  display: flex;
+  gap: 4px;
+  padding: 0;
+}
+
+.variantBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: 10px;
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  cursor: pointer;
+  /* background/border/color provided by Chip variant class */
+}

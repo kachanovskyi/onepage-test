@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.actions {
+  margin-top: var(--space-xl);
+}
+
+.dangerZone {
+  margin-top: auto;
+  padding-top: var(--space-xl);
+}
+
+.errorMsg {
+  font-size: var(--font-size-md);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
