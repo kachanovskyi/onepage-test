@@ -5,9 +5,9 @@
   --color-surface-raised: #2c2c2c;
   --color-surface-hover: #333;
   --color-border: #363636;
-  --color-border-subtle: #2c2c2c;
+  --color-border-subtle: #444;
 
-  --color-text-primary: #ececec;
+  --color-text-primary: #ffffff;
   --color-text-secondary: #999;
   --color-text-tertiary: #666;
 
@@ -18,8 +18,8 @@
   --color-danger: #e55050;
   --color-danger-hover: #ff6b6b;
 
-  --color-input-bg: #1c1c1c;
-  --color-input-border: #3a3a3a;
+  --color-input-bg: #393939;
+  --color-input-border: #E9ECF612;
   --color-input-focus: #4f8ef7;
 
   --radius-sm: 4px;

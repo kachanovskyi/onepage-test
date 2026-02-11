@@ -67,26 +67,28 @@ const EditItemPanel = observer(function EditItemPanel({
 
   return (
     <PanelShell title="Item" onBack={onBack} onClose={onClose}>
-      <div className={styles.form}>
-        <Input
-          label="Label"
-          value={item.label}
-          placeholder="Tag label"
-          onChange={(e) => tagline.updateItem(itemId, { label: e.target.value })}
-        />
+      <div className={styles.content}>
+        <div className={styles.form}>
+          <Input
+            label="Label"
+            value={item.label}
+            placeholder="Tag label"
+            onChange={(e) => tagline.updateItem(itemId, { label: e.target.value })}
+          />
 
-        <Input
-          label="Link"
-          value={item.link}
-          placeholder="/path or https://..."
-          onChange={(e) => tagline.updateItem(itemId, { link: e.target.value })}
-        />
-      </div>
+          <Input
+            label="Link"
+            value={item.link}
+            placeholder="/path or https://..."
+            onChange={(e) => tagline.updateItem(itemId, { link: e.target.value })}
+          />
+        </div>
 
-      <div className={styles.dangerZone}>
-        <Button variant="danger" fullWidth onClick={onDelete}>
-          Delete item
-        </Button>
+        <div className={styles.dangerZone}>
+          <Button variant="danger" fullWidth onClick={onDelete}>
+            Delete item
+          </Button>
+        </div>
       </div>
     </PanelShell>
   );
@@ -113,33 +115,35 @@ function CreateItemPanel({ onBack, onClose }: CreateItemPanelProps) {
   }
 
   return (
-    <PanelShell title="New item" onBack={onBack} onClose={onClose}>
-      <div className={styles.form}>
-        <Input
-          label="Label"
-          value={label}
-          placeholder="Tag label"
-          onChange={(e) => setLabel(e.target.value)}
-          autoFocus
-        />
+    <PanelShell title="Item" onBack={onBack} onClose={onClose}>
+      <div className={styles.content}>
+        <div className={styles.form}>
+          <Input
+            label="Label"
+            value={label}
+            placeholder="Tag label"
+            onChange={(e) => setLabel(e.target.value)}
+            autoFocus
+          />
 
-        <Input
-          label="Link"
-          value={link}
-          placeholder="/path or https://..."
-          onChange={(e) => setLink(e.target.value)}
-        />
-      </div>
+          <Input
+            label="Link"
+            value={link}
+            placeholder="/path or https://..."
+            onChange={(e) => setLink(e.target.value)}
+          />
+        </div>
 
-      <div className={styles.actions}>
-        <Button
-          variant="primary"
-          fullWidth
-          disabled={!canSubmit}
-          onClick={handleSubmit}
-        >
-          Add item
-        </Button>
+        <div className={styles.actions}>
+          <Button
+            className={styles.addButton}
+            fullWidth
+            disabled={!canSubmit}
+            onClick={handleSubmit}
+          >
+            Add item
+          </Button>
+        </div>
       </div>
     </PanelShell>
   );

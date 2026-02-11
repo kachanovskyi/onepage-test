@@ -83,15 +83,11 @@ export const TaglineMainPanel = observer(function TaglineMainPanel() {
         className={styles.stylesRow}
         onClick={() => editor.openStyles()}
       >
-        <svg className={styles.stylesIcon} width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path
-            d="M7.5 1.5H2.5a1 1 0 00-1 1v4.59a1 1 0 00.3.7l5.4 5.41a1 1 0 001.42 0l4.58-4.58a1 1 0 000-1.42L7.8 1.8a1 1 0 00-.3-.3z"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          <circle cx="4.5" cy="4.5" r="0.8" fill="currentColor" />
-        </svg>
+        <img
+          src="/assets/brush.png"
+          alt="Styles"
+          className={styles.stylesIcon}
+        />
         <span className={styles.stylesLabel}>Styles</span>
         <svg className={styles.chevron} width="6" height="10" viewBox="0 0 6 10" fill="none">
           <path d="M1 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

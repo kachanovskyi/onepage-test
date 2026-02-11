@@ -30,8 +30,8 @@
 }
 
 .title {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
   color: var(--color-text-primary);
   text-align: center;
   white-space: nowrap;
@@ -56,6 +56,6 @@
 .body {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-lg);
+  padding: 0;
   animation: panelContentFade 200ms ease-out 40ms both;
 }
