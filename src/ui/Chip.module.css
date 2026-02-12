@@ -20,6 +20,11 @@ button.chip {
   color: inherit;
 }
 
+a.chip,
+button.chip.subtle {
+  color: var(--color-accent);
+}
+
 a.chip:hover,
 button.chip:hover {
   box-shadow: 0 0 0 1px var(--color-accent-subtle);

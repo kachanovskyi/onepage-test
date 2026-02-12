@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from './state/storeContext';
 import { PreviewCanvas } from './preview/PreviewCanvas';
@@ -14,6 +14,13 @@ import styles from './EditorShell.module.css';
 type PresenceState = {
   panel: Panel;
   exiting: boolean;
+};
+
+type PanelMetrics = {
+  top: number;
+  left: number;
+  minHeight: number;
+  maxHeight: number;
 };
 
 /**
@@ -87,8 +94,129 @@ export const EditorShell = observer(function EditorShell() {
   const { editor } = useStores();
   const { panel: displayedPanel, exiting } = usePanelPresence(editor.activePanel);
 
+  const shellRef = useRef<HTMLDivElement>(null);
+  const [panelMetrics, setPanelMetrics] = useState<PanelMetrics | null>(null);
+
+  const isTaglinePanel =
+    displayedPanel?.kind === 'tagline.main' ||
+    displayedPanel?.kind === 'tagline.item' ||
+    displayedPanel?.kind === 'tagline.styles';
+
+  // Measure anchor position and compute panel top / left / heights
+  useLayoutEffect(() => {
+    if (!isTaglinePanel || !shellRef.current) {
+      setPanelMetrics(null);
+      return;
+    }
+
+    const PANEL_W = 320;
+    const PANEL_GAP = 24;
+
+    const updatePosition = () => {
+      const shell = shellRef.current;
+      if (!shell) return;
+
+      const anchor = shell.querySelector<HTMLElement>('[data-tagline-anchor="true"]');
+      if (!anchor) return;
+
+      const shellRect = shell.getBoundingClientRect();
+      const anchorRect = anchor.getBoundingClientRect();
+
+      const topPx = anchorRect.top - shellRect.top;
+      const cardHeightPx = anchorRect.height;
+      const bottomMarginPx = 24;
+      let maxHeightPx = shellRect.height - topPx - bottomMarginPx;
+      if (maxHeightPx < cardHeightPx) {
+        maxHeightPx = cardHeightPx;
+      }
+
+      // Position panel immediately next to card (card right edge + gap)
+      const desiredLeft = anchorRect.right - shellRect.left + PANEL_GAP;
+      // Clamp to prevent overflow and ensure it stays within bounds
+      const maxLeft = shellRect.width - PANEL_W - PANEL_GAP;
+      const minLeft = PANEL_GAP; // Safety: never go too far left
+      const leftPx = Math.max(minLeft, Math.min(desiredLeft, maxLeft));
+
+      setPanelMetrics({
+        top: topPx,
+        left: leftPx,
+        minHeight: cardHeightPx,
+        maxHeight: maxHeightPx,
+      });
+    };
+
+    // Initial measurement
+    updatePosition();
+
+    // Recompute after layout settles (card max-width calc may take a frame)
+    let rafId1: number | null = window.requestAnimationFrame(() => {
+      updatePosition();
+      // Sometimes layout changes across 2 frames (fonts/rendering)
+      rafId1 = window.requestAnimationFrame(() => {
+        rafId1 = null;
+        updatePosition();
+      });
+    });
+
+    const anchorEl =
+      shellRef.current.querySelector<HTMLElement>('[data-tagline-anchor="true"]');
+
+    // CRITICAL: Observe both shell AND anchor for resize
+    // Anchor resize happens when card max-width calc() changes
+    const resizeObserver = new ResizeObserver(() => {
+      updatePosition();
+    });
+    if (anchorEl) {
+      resizeObserver.observe(anchorEl);
+    }
+    resizeObserver.observe(shellRef.current);
+
+    const scrollContainer =
+      shellRef.current.querySelector<HTMLElement>('[data-tagline-scroll="canvas"]');
+
+    let scrollRafId: number | null = null;
+    const handleScroll = () => {
+      if (scrollRafId != null) return;
+      scrollRafId = window.requestAnimationFrame(() => {
+        scrollRafId = null;
+        updatePosition();
+      });
+    };
+
+    const handleResize = () => updatePosition();
+    window.addEventListener('resize', handleResize);
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (rafId1 != null) {
+        window.cancelAnimationFrame(rafId1);
+      }
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', handleResize);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      }
+      if (scrollRafId != null) {
+        window.cancelAnimationFrame(scrollRafId);
+      }
+    };
+  }, [isTaglinePanel, displayedPanel?.kind]);
+
+  const panelStyle =
+    isTaglinePanel && panelMetrics
+      ? {
+          top: `${panelMetrics.top}px`,
+          left: `${panelMetrics.left}px`,
+          right: 'auto', // Override CSS right for Tagline panels
+          minHeight: `${panelMetrics.minHeight}px`,
+          maxHeight: `${panelMetrics.maxHeight}px`,
+        }
+      : undefined;
+
   return (
-    <div className={styles.shell}>
+    <div ref={shellRef} className={styles.shell}>
       <PreviewCanvas>
         <TaglinePreview />
       </PreviewCanvas>
@@ -97,6 +225,7 @@ export const EditorShell = observer(function EditorShell() {
         <div
           key={exiting ? `exit-${displayedPanel.kind}` : displayedPanel.kind}
           className={`${styles.panelArea} ${exiting ? styles.panelExiting : styles.panelEntering}`}
+          style={panelStyle}
         >
           <ActivePanel panel={displayedPanel} />
         </div>

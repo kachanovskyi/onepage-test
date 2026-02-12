@@ -47,52 +47,53 @@ export const TaglineMainPanel = observer(function TaglineMainPanel() {
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
-            <div className={styles.itemList}>
-              {tagline.data.items.map((item) => (
-                <SortableItemRow
-                  key={item.id}
-                  item={item}
-                  onEdit={() => editor.openEditItem(item.id)}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+          <div className={styles.itemList}>
+            {tagline.data.items.map((item) => (
+              <SortableItemRow
+                key={item.id}
+                item={item}
+                onEdit={() => editor.openEditItem(item.id)}
+              />
+            ))}
+            <button
+              type="button"
+              className={styles.addRow}
+              onClick={() => editor.openCreateItem()}
+            >
+              <svg className={styles.addIcon} width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <span>Add item</span>
+            </button>
+          </div>
+        </SortableContext>
+      </DndContext>
 
-        {tagline.data.items.length === 0 && (
-          <p className={styles.emptyMsg}>No items yet.</p>
-        )}
+      {tagline.data.items.length === 0 && (
+        <p className={styles.emptyMsg}>No items yet.</p>
+      )}
+
+      <div className={styles.footer}>
+        <div className={styles.divider} />
 
         <button
           type="button"
-          className={styles.addRow}
-          onClick={() => editor.openCreateItem()}
+          className={styles.stylesRow}
+          onClick={() => editor.openStyles()}
         >
-          <svg className={styles.addIcon} width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <img
+            src="/assets/brush.png"
+            alt="Styles"
+            className={styles.stylesIcon}
+          />
+          <span className={styles.stylesLabel}>Styles</span>
+          <svg className={styles.chevron} width="6" height="10" viewBox="0 0 6 10" fill="none">
+            <path d="M1 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>Add item</span>
         </button>
       </div>
-
-      <div className={styles.divider} />
-
-      <button
-        type="button"
-        className={styles.stylesRow}
-        onClick={() => editor.openStyles()}
-      >
-        <img
-          src="/assets/brush.png"
-          alt="Styles"
-          className={styles.stylesIcon}
-        />
-        <span className={styles.stylesLabel}>Styles</span>
-        <svg className={styles.chevron} width="6" height="10" viewBox="0 0 6 10" fill="none">
-          <path d="M1 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+      </div>
     </PanelShell>
   );
 });

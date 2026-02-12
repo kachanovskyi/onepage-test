@@ -1,14 +1,26 @@
 .shell {
+  position: relative;
   display: flex;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  /* Defaults for panel width + gap; can be overridden via inline CSS vars */
+  --panel-w: 320px;
+  --panel-gap: 24px;
 }
 
-/* Panel wrapper: adds floating spacing + enter/exit animation */
+/* Panel wrapper: absolute overlay, removed from layout flow */
 .panelArea {
-  flex-shrink: 0;
+  position: absolute;
+  right: var(--panel-gap);
+  width: var(--panel-w);
+  max-width: 360px;
   display: flex;
-  padding: 10px 10px 10px 0;
+  padding: 0;
+  z-index: 50;
+  pointer-events: auto;
+  overflow: hidden;
+  /* For Tagline panels: left/top/minHeight/maxHeight set via inline style, right:auto overrides CSS */
 }
 
 .panelEntering {
@@ -18,4 +30,12 @@
 .panelExiting {
   animation: panelSlideOut var(--duration-panel) ease-in forwards;
   pointer-events: none;
+}
+
+/* Mobile: narrower panel, less gap */
+@media (max-width: 900px) {
+  .panelArea {
+    right: 12px;
+    width: min(320px, calc(100% - 24px));
+  }
 }
